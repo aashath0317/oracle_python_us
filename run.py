@@ -41,10 +41,3 @@ while True:
       max_wait_seconds=10
   )
   print("VM is running")
- ''' 
-  # Do some work here...
-  
-  # Terminate the VM
-  compute_client.terminate_instance(vm.id)
-  print("Terminated VM:", vm.id)
-'''
