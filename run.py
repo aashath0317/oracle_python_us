@@ -1,5 +1,9 @@
 import oci
-
+availability_domain = 'vOeV:AP-SINGAPORE-1-AD-1'
+region= 'ap-singapore-1'
+tenancy= 'ocid1.tenancy.oc1..aaaaaaaasnvm3ufpikguqeurze3z6ek5pgbsg2uiqtkfqha5qxplzbqqbm5a'
+compartmentId= 'ocid1.tenancy.oc1..aaaaaaaasnvm3ufpikguqeurze3z6ek5pgbsg2uiqtkfqha5qxplzbqqbm5a'
+image_id= '
 # Create a client for the Compute Cloud API
 compute_client = oci.core.ComputeClient(config)
 
