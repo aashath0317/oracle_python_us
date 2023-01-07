@@ -32,9 +32,12 @@ while True:
           }
       )
   )
-  vm = vm_response.data
-  print("Created VM:", vm.id)
- 
+  try:  
+      vm = vm_response.data
+      print("Created VM:", vm.id)
+  except ServiceError:
+      print ("Too many tries retrying in 10")   
+      continue 
   # Wait for the VM to reach the "Running" state
   compute_client.get_instance(vm.id).wait_until(
       oci.core.models.Instance.LIFECYCLE_STATE_RUNNING,
