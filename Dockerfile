@@ -1,8 +1,8 @@
 FROM python:3
 WORKDIR /usr/src/app
 
-RUN pip install oci
+RUN pip3 install oci
 
 COPY . .
 
-CMD [ "python", "./run.py" ]
+CMD [ "python3", "./run.py" ]
