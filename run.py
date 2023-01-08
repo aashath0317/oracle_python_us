@@ -2,21 +2,21 @@ import oci
 import os
 import time
 config = {
-    "user": "ocid1.user.oc1..aaaaaaaaul4cbqzowr4x5bnmsdmlqpo3onbs2ekwqb55yhnbh3izmksgr5ha",
-    "fingerprint": "4a:d4:ae:62:e3:29:bc:a6:0c:c9:b6:55:7a:f7:ba:a9",
+    "user": "ocid1.user.oc1..aaaaaaaaakgvq2decbpx4rwzommac4x3g5kxuhmhsgzutgsz7ixlviazxpdq",
+    "fingerprint": "00:2e:a6:27:16:43:99:3e:e6:8b:77:52:1c:61:02:10",
     "key_file": "oci_private.pem",
-    "tenancy": "ocid1.tenancy.oc1..aaaaaaaasnvm3ufpikguqeurze3z6ek5pgbsg2uiqtkfqha5qxplzbqqbm5a",
-    "region": "ap-singapore-1"
+    "tenancy": "ocid1.tenancy.oc1..aaaaaaaazg6cbfgzyredqou3g4tjshdi2cdo5jke262qhidqzoi3qomjwtpa",
+    "region": "us-phoenix-1"
 }
 
-instance_name = 'instance-20230107-1323'
-shape = 'VM.Standard.E2.1.Micro'
-availability_domain = 'vOeV:AP-SINGAPORE-1-AD-1'
-compartment_id= 'ocid1.tenancy.oc1..aaaaaaaasnvm3ufpikguqeurze3z6ek5pgbsg2uiqtkfqha5qxplzbqqbm5a'
-image_id= 'ocid1.image.oc1.ap-singapore-1.aaaaaaaaylr7uotjuy4rbyfe2tm6icj6vwr77goh3rzvmcwzxovunkejypsa'
-subnet_id = 'ocid1.subnet.oc1.ap-singapore-1.aaaaaaaavnabp2lchaixly3e4idw4kzhan3hng73sou4voxnr5zodncfwsnq'
-ssh_authorized_keys = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCP5RgnI5+rQLcraEfU/59MZLqE5tXZQRiLoZ1J42wt9nrPh2uy1ReVUQzzX3hXQRbOc62Og+XCVEMILvgFa+1bQysFev1jQCKeG1bqufJniVT9heWksKy85aFuCd8tnCSpeCjFoSnCohySpeh0dceIjw/mimhr//+74806HQIp6j/w2dIpj4jc4ArmgEvxdocR8Oi4F+C1hQ1uJCsb8dMzV/g9csXbW2+gktbQEpiO+XgRbC4CVBgT6nZGF5RhVwDyLMc6ec/4gvRfMcy24b+dDQnVR7/JdpTx2FDS2ALwr6u6/+XNsPpnxAAsN0mKiviUrffQ1xCcoh0cXil7BsXR rsa-key-20230107'
-bootVolumeSizeInGBs = 50
+instance_name = 'instance-20230108-1105'
+shape = 'VM.Standard.A1.Flex'
+#availability_domain = 'vOeV:AP-SINGAPORE-1-AD-1'
+compartment_id= 'ocid1.tenancy.oc1..aaaaaaaazg6cbfgzyredqou3g4tjshdi2cdo5jke262qhidqzoi3qomjwtpa'
+image_id= 'ocid1.image.oc1.phx.aaaaaaaanyjs4d76ax5anv254rnscizcnrkfdqmvwxw7bnwpdxh2z5b2n2ia'
+subnet_id = 'ocid1.subnet.oc1.phx.aaaaaaaakk2bava4vnzpkk2huhr2mpr7dw2sev6gsrbmetjlmhe566qq2htq'
+ssh_authorized_keys = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCIp9Tq+a9hUL796nCKtPpoE9LBxbRAxknuExUImZv0Nn+4Mq2knSCtStqoOlrt8ta2eBsVsm0lRR3dkbNrWeDsk25tHonBkhvD9ltDKz7JfqkhaWmnGiVsMX0xqcj+L4EzbjcmwPQ0PV4Vb9SvpWgY7VkCtvnTykPAm4wloe9FfZrhN/ZvpTjOc1O+kyaMHi+e8kbk1B+BeqbVZrNwCyEfdIPz5Ykb+G9oEoagnrrCzMF1usxLAQ3hIq4A6ex9w6e9hUASK7yi4aGUFXzX4M9By8WlE5SihqVs+kepPTau2DPpmcqTdmOerFgkFAXNvU0IvJdlvTMDPp8AyaqNy9P5 rsa-key-20230108'
+bootVolumeSizeInGBs = 100
 bootVolumeVpusPerGB = 10
 isPvEncryptionInTransitEnabled = True
 
@@ -31,8 +31,11 @@ while True:
             image_id=image_id,
             shape=shape,
             subnet_id=subnet_id,
-            availability_domain=availability_domain,
+            availability_domain='LiiQ:PHX-AD-3',
             is_pv_encryption_in_transit_enabled=True,
+            bootVolumeSizeInGBs = 100,
+            ocpus=4,
+            memoryInGBs=24,
             metadata={
                 "ssh_authorized_keys": ssh_authorized_keys
             }
