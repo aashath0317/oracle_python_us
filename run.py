@@ -19,10 +19,11 @@ ssh_authorized_keys = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCIp9Tq+a9hUL796nCKt
 bootVolumeSizeInGBs = 100
 bootVolumeVpusPerGB = 10
 isPvEncryptionInTransitEnabled = True
-
+domains = ["LiiQ:PHX-AD-1","LiiQ:PHX-AD-2","LiiQ:PHX-AD-3"]
+d_change = 0
 compute_client = oci.core.ComputeClient(config)
-while True:
-  # Create a VM
+while d_change <= 2 :          
+  print("trying "+domains[d_change])
   try:  
     vm_response = compute_client.launch_instance(
         oci.core.models.LaunchInstanceDetails(
@@ -46,59 +47,12 @@ while True:
     )
   except oci.exceptions.ServiceError as er:
       print(er.message)
-      print("waiting for 10s")
       time.sleep(10)
-      try:
-        vm_response = compute_client.launch_instance(
-                    oci.core.models.LaunchInstanceDetails(
-                        compartment_id=compartment_id,
-                        display_name = instance_name,
-                        image_id=image_id,
-                        shape=shape,
-                        subnet_id=subnet_id,
-                        availability_domain='LiiQ:PHX-AD-2',
-                        is_pv_encryption_in_transit_enabled=True,
-                        shape_config={
-                        "ocpus":4,
-                        "memory_in_gbs":24,
-                        "boot_volume_size_in_gbs":100
-                        },
-                        metadata={
-                            "ssh_authorized_keys": ssh_authorized_keys
-                        },
+      d_change = d_change+1
+      if d_change == 3:
+        d_change = 0     
+      continue
 
-                    )
-                )
-      except oci.exceptions.ServiceError as er:
-        print(er.message)
-        print("waiting for 10s")
-        time.sleep(10)      
-        try:
-                vm_response = compute_client.launch_instance(
-                            oci.core.models.LaunchInstanceDetails(
-                                compartment_id=compartment_id,
-                                display_name = instance_name,
-                                image_id=image_id,
-                                shape=shape,
-                                subnet_id=subnet_id,
-                                availability_domain='LiiQ:PHX-AD-2',
-                                is_pv_encryption_in_transit_enabled=True,
-                                shape_config={
-                                "ocpus":4,
-                                "memory_in_gbs":24,
-                                "boot_volume_size_in_gbs":100
-                                },
-                                metadata={
-                                    "ssh_authorized_keys": ssh_authorized_keys
-                                },
-
-                            )
-                        )
-        except oci.exceptions.ServiceError as er:
-                print(er.message)
-                print("waiting for 10s")
-                time.sleep(10)
-                continue          
   vm = vm_response.data
   print("Created VM:", vm.id)
   # Wait for the VM to reach the "Running" state
