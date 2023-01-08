@@ -4,7 +4,7 @@ import time
 config = {
     "user": "ocid1.user.oc1..aaaaaaaaakgvq2decbpx4rwzommac4x3g5kxuhmhsgzutgsz7ixlviazxpdq",
     "fingerprint": "00:2e:a6:27:16:43:99:3e:e6:8b:77:52:1c:61:02:10",
-    "key_file": "oci_private.pem",
+    "key_file": "private.pem",
     "tenancy": "ocid1.tenancy.oc1..aaaaaaaazg6cbfgzyredqou3g4tjshdi2cdo5jke262qhidqzoi3qomjwtpa",
     "region": "us-phoenix-1"
 }
@@ -33,20 +33,72 @@ while True:
             subnet_id=subnet_id,
             availability_domain='LiiQ:PHX-AD-3',
             is_pv_encryption_in_transit_enabled=True,
-            bootVolumeSizeInGBs = 100,
-            ocpus=4,
-            memoryInGBs=24,
+            shape_config={
+            "ocpus":4,
+            "memory_in_gbs":24,
+            "boot_volume_size_in_gbs":100
+            },
             metadata={
                 "ssh_authorized_keys": ssh_authorized_keys
-            }
+            },
+
         )
     )
   except oci.exceptions.ServiceError as er:
       print(er.message)
       print("waiting for 10s")
       time.sleep(10)
-      continue
-  
+      try:
+        vm_response = compute_client.launch_instance(
+                    oci.core.models.LaunchInstanceDetails(
+                        compartment_id=compartment_id,
+                        display_name = instance_name,
+                        image_id=image_id,
+                        shape=shape,
+                        subnet_id=subnet_id,
+                        availability_domain='LiiQ:PHX-AD-2',
+                        is_pv_encryption_in_transit_enabled=True,
+                        shape_config={
+                        "ocpus":4,
+                        "memory_in_gbs":24,
+                        "boot_volume_size_in_gbs":100
+                        },
+                        metadata={
+                            "ssh_authorized_keys": ssh_authorized_keys
+                        },
+
+                    )
+                )
+      except oci.exceptions.ServiceError as er:
+        print(er.message)
+        print("waiting for 10s")
+        time.sleep(10)      
+        try:
+                vm_response = compute_client.launch_instance(
+                            oci.core.models.LaunchInstanceDetails(
+                                compartment_id=compartment_id,
+                                display_name = instance_name,
+                                image_id=image_id,
+                                shape=shape,
+                                subnet_id=subnet_id,
+                                availability_domain='LiiQ:PHX-AD-2',
+                                is_pv_encryption_in_transit_enabled=True,
+                                shape_config={
+                                "ocpus":4,
+                                "memory_in_gbs":24,
+                                "boot_volume_size_in_gbs":100
+                                },
+                                metadata={
+                                    "ssh_authorized_keys": ssh_authorized_keys
+                                },
+
+                            )
+                        )
+        except oci.exceptions.ServiceError as er:
+                print(er.message)
+                print("waiting for 10s")
+                time.sleep(10)
+                continue          
   vm = vm_response.data
   print("Created VM:", vm.id)
   # Wait for the VM to reach the "Running" state
