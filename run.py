@@ -61,7 +61,8 @@ async def run_code():
             )
         )
       except oci.exceptions.ServiceError as er:
-          print(str(er.message))
+          message = str(er.message)
+          await client.send_message(igroup, message)
           time.sleep(10)
           d_change = d_change+1
           if d_change == 3:
